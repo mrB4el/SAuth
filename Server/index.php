@@ -5,20 +5,20 @@
 	ini_set('display_startup_errors', 1);
 	//</errors>
 	
-	define ("DBHOST", "localhost"); 
-	define ("DBNAME", "2step");
-	define ("DBUSER", "2step");
-	define ("DBPASS", "123456");  
 	
 	
 	//includes
 	
-		
+	include 'MySQLConnect_Class.php';
+	include 'Cryptography_class.php';
+	include 'JSON_Class.php';
+	
+	
 	class SetMode{
 		
 		private $mode = '0';
 		
-		function set_Mode( $type = 'lol', $debug = FALSE ){
+		function set_Mode( $type = 'set', $debug = FALSE ){
 			
 			if( $type == 'set' ){ 
 				$this->mode = 0; 
@@ -45,23 +45,49 @@
 
 	
 	$type = 'set';
-
+	$login = '';
+	$password = '';
+	
 	//Получаемые параметры
 	if (isset($_GET["type"])) $type = $_GET['type'];
-	if (isset($_GET["token"])) $type = $_GET['token'];
+	if (isset($_GET["token"])) $token = $_GET['token'];
+	if (isset($_GET["login"])) $login = $_GET['login'];
+	if (isset($_GET["password"])) $password = $_GET['password'];
 	
-	$setMode->set_Mode($type, FALSE);
-	$setMode->check_Mode(FALSE);
+	$internal_MySQL = new internal_MySQL();
+	$crypto = new CryptoClass;
+	$json = new JSON_class();
 	
-	$mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
-    
-	if ($mysqli->connect_errno) {
-        echo "Не удалось подключиться к MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-    }
+	if($type == "get")
+	{
+		// admin 
+		// http://localhost/test/index.php?type=get&login=admin&password=e10adc3949ba59abbe56e057f20f883e
+		
+		if( ($login == 'admin') && ($password == 'e10adc3949ba59abbe56e057f20f883e') ){
+			$publickey = $crypto->get_publickey();
+		
+			$token = md5('fuck you');
+			
+			$plain_data = array('publickey' => $publickey, 'token' => $token);
+			$json_data = $json->send_reg_data($plain_data);
+			
+			echo $json_data;
+		}
+		else {
+			echo'fail';
+		}
+		
+	}
 	
-	include 'MySQLConnect_Class.php';
+	//$setMode->set_Mode($type, FALSE);
+	//$setMode->check_Mode(FALSE);
 	
-	$result = new Result( $mysqli, array('ss', $login, $pass), array('count'), "SELECT COUNT(`id`) FROM `users` WHERE `login` = ? AND `password` = ?" );
-    $field = $result->getResult();
+	
+
+	
+	//$result = new Result( $mysqli, array('ss', $login, $pass), array('count'), "SELECT COUNT(`id`) FROM `users` WHERE `login` = ? AND `password` = ?" );
+    //$field = $result->getResult();
+	
+	
 	
 ?>
