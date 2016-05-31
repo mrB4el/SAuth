@@ -2,9 +2,6 @@ C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\ApplicationInsi
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\App.xbf
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\MainPage.xbf
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\PinAuth.xbf
-C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\App1.xr.xml
-C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\App1.exe
-C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\App1.pdb
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\resources.pri
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\AppxManifest.xml
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\Core\App1.exe
@@ -131,8 +128,6 @@ C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\App.xbf
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\MainPage.xbf
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\PinAuth.xbf
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\XamlSaveStateFile.xml
-C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\App1.exe
-C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\App1.pdb
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\ResourceHandlingTask.state
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\FxResources.Microsoft.CSharp.SR.resw
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\FxResources.Microsoft.VisualBasic.SR.resw
@@ -206,3 +201,9 @@ C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\DebugPage.g.i.c
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\DebugPage.g.cs
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\DebugPage.xaml
 C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\DebugPage.xbf
+C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\SAuth_Client.xr.xml
+C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\SAuth_Client.exe
+C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\SAuth_Client.pdb
+C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\Core\SAuth_Client.exe
+C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\SAuth_Client.exe
+C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\obj\x86\Debug\SAuth_Client.pdb
