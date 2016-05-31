@@ -71,12 +71,55 @@
 			$plain_data = array('publickey' => $publickey, 'token' => $token);
 			$json_data = $json->send_reg_data($plain_data);
 			
-			echo $json_data;
+			echo $json_data;			
 		}
 		else {
 			echo'fail';
 		}
 		
+	}
+	if($type == "set")
+	{
+		if (isset($_GET["cipherdata"])) $cipherdata = $_GET['cipherdata'];
+		
+		//echo $cipherdata;
+		//echo "<br/><br/><br/><br/>";
+		
+		//$cipherdata = base64_decode($cipherdata);
+		//lCFLPFRzJiUiaWbolRoksQK8Hbbt9MiHcLnbs2B79BF0OrIF3lVMorLaP/tdVHzIz3Dqtu2Ds8CBmPCAd7PGR0Y9MRdsa/BBQSGoLbLbpPmjNq5exroyl3uv6ZoueyqOBaLlSBBYkKHbdSh3PD6AY8yQA0XlMpSEDPaDK6vZhUk=
+		//lCFLPFRzJiUiaWbolRoksQK8Hbbt9MiHcLnbs2B79BF0OrIF3lVMorLaP/tdVHzIz3Dqtu2Ds8CBmPCAd7PGR0Y9MRdsa/BBQSGoLbLbpPmjNq5exroyl3uv6ZoueyqOBaLlSBBYkKHbdSh3PD6AY8yQA0XlMpSEDPaDK6vZhUk=
+		$cipherdata = "PYTbYxI4ttWpt3lkVVq/yUHA1los1pazaKUqKKmaz8hEf+XwdfW2IZizhEOAMHtunLjWSCf3vDSvK4/wftI74KN/ZjyvldsKUq3NKpCLFRq7ZmEBwNrzXD5TPtp6dr1020uLobfZhadVgLfkqOUqgJgy/Fx3ip3axKDBSgQhloQ=";
+		$cipherdata = base64_decode($cipherdata);	
+		echo $cipherdata;
+		echo "<br/><br/><br/><br/>";
+		
+		$cipherdata = $crypto->decrypt($cipherdata);
+		if(empty($cipherdata))
+		{
+			echo "Fail";
+		}
+		else
+		{
+			echo "NOt";
+		}
+		echo $cipherdata;
+		echo "<br/><br/><br/><br/>";
+		
+		
+		$cipherdata = $crypto->encrypt("hello");
+		echo $cipherdata;
+		echo "<br/><br/><br/><br/>";
+		
+		$cipherdata = base64_encode($cipherdata);
+		echo $cipherdata;
+		echo "<br/><br/><br/><br/>";
+		
+		$cipherdata = base64_decode($cipherdata);
+		echo $cipherdata;
+		echo "<br/><br/><br/><br/>";
+		
+		$plaindata = $crypto->decrypt($cipherdata);
+		echo $plaindata;
 	}
 	
 	//$setMode->set_Mode($type, FALSE);
