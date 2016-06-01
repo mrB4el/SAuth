@@ -60,7 +60,11 @@ namespace App1
             //textBox.Text = cipherdata;
             //http://localhost/test/index.php?type=set&cipherdata=cipherdata
 
+<<<<<<< HEAD
 
+=======
+            //http://localhost/test/index.php?type=set&cipherdata=cipherdata
+>>>>>>> origin/master
 
             //textBlock.Text = await SendDevicename(token, "упячка");
 
