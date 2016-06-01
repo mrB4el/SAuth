@@ -49,10 +49,17 @@ Temporary Items
 
 *.sdf
 *.suo
-/Debug
-/ipch
 *.log
 *.aps
+
 /Release
+/Debug
+/ipch
 /obj
 /bin
+
+\Release
+\Debug
+\ipch
+\obj
+\bin
