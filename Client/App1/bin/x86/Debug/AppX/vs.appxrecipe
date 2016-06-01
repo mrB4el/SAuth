@@ -22,13 +22,13 @@
     <AppXManifest Include="C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\Core\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2016-06-01T09:06:09.938</Modified>
+      <Modified>2016-06-01T12:04:09.090</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\SAuth_Client.exe">
       <PackagePath>entrypoint\SAuth_Client.exe</PackagePath>
-      <Modified>2016-06-01T09:06:09.706</Modified>
+      <Modified>2016-06-01T12:04:08.006</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\mrB4el\.nuget\packages\Microsoft.ApplicationInsights\1.0.0\lib\portable-win81+wpa81\Microsoft.ApplicationInsights.dll">
       <PackagePath>Microsoft.ApplicationInsights.dll</PackagePath>
@@ -510,11 +510,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2016-05-31T10:26:09.052</Modified>
+      <Modified>2016-06-01T12:04:08.796</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\mrB4el\Documents\GitHub\SAuth\Client\App1\bin\x86\Debug\Core\SAuth_Client.exe">
       <PackagePath>SAuth_Client.exe</PackagePath>
-      <Modified>2016-06-01T09:06:09.936</Modified>
+      <Modified>2016-06-01T12:04:09.090</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
