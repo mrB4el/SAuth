@@ -59,8 +59,6 @@ namespace App1
 
             string cipherdata = WinRTEncrypt(publickey, "MIGJAoGBAKR0RB3X24esTXsET");
 
-            //string result = doit(publickey, "hello");
-
             //http://localhost/test/index.php?type=set&cipherdata=cipherdata
 
             //string url = "http://localhost/test/index.php?type=set&cipherdata=";
