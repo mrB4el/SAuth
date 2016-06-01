@@ -12,23 +12,54 @@
         public function check_connect(){
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             
-            $res = true;
+            $result = true;
             
             if ($mysqli->connect_errno) {
                 echo "Не удалось подключиться к MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
-                $res = false;
+                $result = false;
             }
-            return $res;    
+            return $result;    
         }    
-    
-        public function set_token($name, $value)
+        
+        public function check_token($token)
+        {
+            $result = 0;
+            
+            $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+            $token = mysqli_real_escape_string($mysqli, $token);
+            
+            $stmt = $mysqli->prepare("SELECT uid, expired FROM tokens WHERE token = '$token'");
+            $stmt->execute();
+            $res = $stmt->get_result();
+            $row = $res->fetch_assoc();
+            
+            if($row["expired"] == 0)
+            {
+                $result = $row["uid"];
+            }
+            
+            return $result;
+        }
+        
+        public function close_token($token)
+        {
+            $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+            $token = mysqli_real_escape_string($mysqli, $token);
+            
+            $stmt = $mysqli->prepare("UPDATE tokens SET expired=1 WHERE token = '$token'");
+            $stmt->execute();
+            
+        }
+        
+        public function set_token($uid, $name, $value)
         {
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             
+            $uid = mysqli_real_escape_string($mysqli, $uid);
             $name = mysqli_real_escape_string($mysqli, $name);
             $value = mysqli_real_escape_string($mysqli, $value);
                              
-            if($mysqli->query("INSERT into 'TOKEN_BASE' (name, token) VALUES ('$name', '$value')")){
+            if($mysqli->query("INSERT into 'TOKEN_BASE' (uid, name, token, expired) VALUES ('$uid', $name', '$value', '0')")){
                 printf("%d строк вставлено.\n", mysqli_affected_rows($mysqli));
             }
         }
@@ -45,17 +76,18 @@
             return $row["token"];
         }
         
-        public function set_device_info($name, $uid, $hash)
+        public function set_device_info($uid, $devicename, $secret)
         {
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             
             $uid = mysqli_real_escape_string($mysqli, $uid);
-            $name = mysqli_real_escape_string($mysqli, $name);
-            $hash = mysqli_real_escape_string($mysqli, $hash);
-                             
-            if($mysqli->query("INSERT into devices (uid, name, hash) VALUES ('$uid', '$name', '$hash')")){
-                printf("%d строк вставлено.\n", mysqli_affected_rows($mysqli));
-            }
+            $devicename = mysqli_real_escape_string($mysqli, $devicename);
+            $secret = mysqli_real_escape_string($mysqli, $secret);
+            
+            //$uid = intval($uid);
+            
+            $stmt = $mysqli->prepare("INSERT into devices (uid, devicename, hash) VALUES ('$uid', '$devicename', '$secret')");
+            $stmt->execute();
         }
         
         public function get_device_info($uid)

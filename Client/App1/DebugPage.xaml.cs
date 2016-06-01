@@ -50,6 +50,7 @@ namespace App1
 
             string token = jsonObject.GetNamedString("token");
             string publickey = jsonObject.GetNamedString("publickey");
+            string date = jsonObject.GetNamedString("date");
 
             //string publickey = "MIGJAoGBAKR0RB3X24esTXsETGqpUZU3BeKovg1R2OwxAL0vnSJE4tLs5woVqipMsGNGlWP+bfMjhdZOeVQ/Fk+R2quPVuV3lEwF7ow9BFqUlxxW0xHzj4RrpIC460pgDs8e3MYZt/4UignO0K4b2T2tl6GiB2UGk6QfNs6VuFp9+WKqtZvPAgMBAAE=";
 
@@ -59,23 +60,35 @@ namespace App1
             //string cipherdata = WinRTEncrypt(publickey, "MIGJAoGBAKR0RB3X24esTXsET");
             //textBox.Text = cipherdata;
             //http://localhost/test/index.php?type=set&cipherdata=cipherdata
-
-
             //http://localhost/test/index.php?type=set&cipherdata=cipherdata
 
 
             //textBlock.Text = await SendDevicename(token, "упячка");
 
+            string pin = "1313";
 
             var data = new Dictionary<string, string>();
-            data["type"] = "post";
+            data["type"] = "registration";
             data["token"] = token;
-            data["devicename"] = "YourMom";
+            data["devicename"] = "WIN10-PC";
+            data["secret"] = ComputeMD5(ComputeMD5("Test") + pin);
 
             textBlock.Text = await PostData("http://localhost/test/index.php", data);
 
         }
- 
+        
+        public string ComputeMD5(string str)
+        {
+            var alg = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
+            IBuffer buff = CryptographicBuffer.ConvertStringToBinary(str, BinaryStringEncoding.Utf8);
+
+            var hashed = alg.HashData(buff);
+            var res = CryptographicBuffer.EncodeToHexString(hashed);
+
+            return res;
+        }
+
+
         public async System.Threading.Tasks.Task<string> PostData(string server, Dictionary<string, string> data)
         {
 

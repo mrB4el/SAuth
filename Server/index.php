@@ -64,11 +64,14 @@
 		// http://localhost/test/index.php?type=get&login=admin&password=e10adc3949ba59abbe56e057f20f883e
 		
 		if( ($login == 'admin') && ($password == 'e10adc3949ba59abbe56e057f20f883e') ){
-			$publickey = $crypto->get_publickey();
-		
-			$token = md5('fuck you');
+			//$publickey = $crypto->get_publickey();
+			$publickey = "somepublickey";
 			
-			$plain_data = array('publickey' => $publickey, 'token' => $token);
+			$token = $internal_MySQL->get_token("1");
+			
+			$today = date("Y-m-d H:i:s"); 
+									
+			$plain_data = array('publickey' => $publickey, 'token' => $token, 'date' => $today);
 			$json_data = $json->send_reg_data($plain_data);
 			
 			echo $json_data;			
@@ -121,15 +124,33 @@
 		$plaindata = $crypto->decrypt($cipherdata);
 		echo $plaindata;
 	}
-	if($type == "post")
+	if($type == "registration")
 	{
 		if (isset($_GET["token"])) $token = $_GET['token'];
 		if (isset($_GET["devicename"])) $devicename = $_GET['devicename'];
+		if (isset($_GET["secret"])) $secret = $_GET['secret'];
 		
-		echo "Your token is:".$token;
-		echo "<br/><br/>";
-		echo "Device name is: ".$devicename;
-		echo "<br/><br/>";
+		$uid = $internal_MySQL->check_token($token);
+		
+		if(empty($uid))
+		{
+			echo "Token is not valid or expired";
+			echo "<br/><br/>";
+		}
+		else
+		{			
+			echo "Your token is: ".$token;
+			echo "<br/><br/>";
+			echo "Device name is: ".$devicename;
+			echo "<br/><br/>";
+			echo "Device secret is: ".$secret;
+			echo "<br/><br/>";
+			echo "Your uid is: ".$uid;
+			echo "<br/><br/>";
+			
+			//$internal_MySQL->close_token($token);
+			$internal_MySQL->set_device_info($uid, $devicename, $secret);
+		}
 	}
 	//$setMode->set_Mode($type, FALSE);
 	//$setMode->check_Mode(FALSE);
