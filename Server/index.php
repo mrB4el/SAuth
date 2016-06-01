@@ -121,7 +121,16 @@
 		$plaindata = $crypto->decrypt($cipherdata);
 		echo $plaindata;
 	}
-	
+	if($type == "post")
+	{
+		if (isset($_GET["token"])) $token = $_GET['token'];
+		if (isset($_GET["devicename"])) $devicename = $_GET['devicename'];
+		
+		echo "Your token is:".$token;
+		echo "<br/><br/>";
+		echo "Device name is: ".$devicename;
+		echo "<br/><br/>";
+	}
 	//$setMode->set_Mode($type, FALSE);
 	//$setMode->check_Mode(FALSE);
 	

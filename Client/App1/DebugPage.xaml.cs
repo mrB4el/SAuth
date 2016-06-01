@@ -21,6 +21,7 @@ using System.Text;
 using System.Diagnostics;
 using Windows.Security.Cryptography;
 using System.Security;
+using System.Reflection;
 
 // Шаблон элемента пустой страницы задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -42,36 +43,57 @@ namespace App1
 
             string url = "http://localhost/test/index.php?type=get&login=admin&password=e10adc3949ba59abbe56e057f20f883e";
 
-            //HttpResponseMessage response = await client.GetAsync(new Uri(url));
+            HttpResponseMessage response = await client.GetAsync(new Uri(url));
 
-            //string jsonString = await response.Content.ReadAsStringAsync();
-            //JsonObject jsonObject = JsonObject.Parse(jsonString);
+            string jsonString = await response.Content.ReadAsStringAsync();
+            JsonObject jsonObject = JsonObject.Parse(jsonString);
 
-            //string token = jsonObject.GetNamedString("token");
-            //string publickey = jsonObject.GetNamedString("publickey");
+            string token = jsonObject.GetNamedString("token");
+            string publickey = jsonObject.GetNamedString("publickey");
 
-            //string publickey = "MIGJAoGBAK+0yr1Dl3Ip3olGgi5R5PL9ikwpnUghCNZR7zMGfHOQeX8sjGn1GArIHJN1A14p1rKGAn8E5fa+u6t8CQ5nGhZHTw0ZmJCPzYEmOOIEh7Ne8b8JQhXZbcO4HydO5g5DViRGk/3frKVY6fngIkoD8rgZsUDvQITy9eRFl3NifqqFAgMBAAE=";
-
-            string publickey = "MIGJAoGBAKR0RB3X24esTXsETGqpUZU3BeKovg1R2OwxAL0vnSJE4tLs5woVqipMsGNGlWP+bfMjhdZOeVQ/Fk+R2quPVuV3lEwF7ow9BFqUlxxW0xHzj4RrpIC460pgDs8e3MYZt/4UignO0K4b2T2tl6GiB2UGk6QfNs6VuFp9+WKqtZvPAgMBAAE=";
+            //string publickey = "MIGJAoGBAKR0RB3X24esTXsETGqpUZU3BeKovg1R2OwxAL0vnSJE4tLs5woVqipMsGNGlWP+bfMjhdZOeVQ/Fk+R2quPVuV3lEwF7ow9BFqUlxxW0xHzj4RrpIC460pgDs8e3MYZt/4UignO0K4b2T2tl6GiB2UGk6QfNs6VuFp9+WKqtZvPAgMBAAE=";
 
             // byte[] byteArray = WinRTEncrypt(publickey, "hello");
             //string cipherdata = System.Text.Encoding.UTF8.GetString(byteArray);
 
-            string cipherdata = WinRTEncrypt(publickey, "MIGJAoGBAKR0RB3X24esTXsET");
-
-            //string result = doit(publickey, "hello");
-
+            //string cipherdata = WinRTEncrypt(publickey, "MIGJAoGBAKR0RB3X24esTXsET");
+            //textBox.Text = cipherdata;
             //http://localhost/test/index.php?type=set&cipherdata=cipherdata
 
-            //string url = "http://localhost/test/index.php?type=set&cipherdata=";
-            //url+=cipherdata;
-            //HttpResponseMessage response = await client.GetAsync(new Uri(url));
 
-            //string result = response.ToString();
 
-            textBox.Text = cipherdata;
+            //textBlock.Text = await SendDevicename(token, "упячка");
+
+
+            var data = new Dictionary<string, string>();
+            data["type"] = "post";
+            data["token"] = token;
+            data["devicename"] = "YourMom";
+
+            textBlock.Text = await PostData("http://localhost/test/index.php", data);
+
         }
-        
+ 
+        public async System.Threading.Tasks.Task<string> PostData(string server, Dictionary<string, string> data)
+        {
+
+            string request = "";
+
+            foreach (KeyValuePair<string, string> kvp in data)
+            {
+                request = request + "&" + kvp.Key + "=" + kvp.Value;
+            }
+
+            var client = new HttpClient();
+            string url = server + "?" + request;
+
+            HttpResponseMessage response = await client.GetAsync(new Uri(url));
+
+            string answer = await response.Content.ReadAsStringAsync();
+
+            return answer;
+        }
+
         public static string WinRTEncrypt(string publicKey, string data)
         {
             IBuffer keyBuffer = CryptographicBuffer.DecodeFromBase64String(publicKey);
@@ -90,6 +112,17 @@ namespace App1
             return result;
         }
 
-        
+        public async System.Threading.Tasks.Task<string> SendDevicename(string server, string type, string token, string devicename)
+        {
+            var client = new HttpClient();
+            string url = "http://localhost/test/index.php?type=post&token=" + token + "&devicename=" + devicename;
+
+            HttpResponseMessage response = await client.GetAsync(new Uri(url));
+
+            string answer = await response.Content.ReadAsStringAsync();
+
+            return answer;
+        }
+
     }
 }
