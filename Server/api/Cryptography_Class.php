@@ -2,9 +2,7 @@
     //$privatekey = file_get_contents('private.key');
     //$publickey = file_get_contents('public.key');
     
-    
-    include 'Crypt/RSA.php';
-        
+            
     class CryptoConfig
     {
         public $publickey_path = "public.pem";

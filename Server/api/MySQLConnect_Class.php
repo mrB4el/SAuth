@@ -28,14 +28,18 @@
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             $token = mysqli_real_escape_string($mysqli, $token);
             
-            $stmt = $mysqli->prepare("SELECT uid, expired FROM tokens WHERE token = '$token'");
-            $stmt->execute();
-            $res = $stmt->get_result();
-            $row = $res->fetch_assoc();
-            
-            if($row["expired"] == 0)
-            {
-                $result = $row["uid"];
+            $sql = "SELECT uid, expired FROM tokens WHERE token = '$token'";
+            if($query = $mysqli->prepare($sql)){
+                $query->execute();
+                $res = $query->get_result();
+                $row = $res->fetch_assoc();
+                
+                if($row["expired"] == 0)
+                {
+                    $result = $row["uid"];
+                }
+            }else{
+                var_dump($mysqli->error);
             }
             
             return $result;
@@ -45,35 +49,53 @@
         {
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             $token = mysqli_real_escape_string($mysqli, $token);
+
+            $sql = "UPDATE tokens SET expired=1 WHERE token = '$token'";
             
-            $stmt = $mysqli->prepare("UPDATE tokens SET expired=1 WHERE token = '$token'");
-            $stmt->execute();
-            
+            if($query = $mysqli->prepare($sql)){
+                $query->execute();
+            }else{
+                var_dump($mysqli->error);
+            }
         }
         
-        public function set_token($uid, $name, $value)
+        public function set_token($uid, $token)
         {
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             
             $uid = mysqli_real_escape_string($mysqli, $uid);
-            $name = mysqli_real_escape_string($mysqli, $name);
-            $value = mysqli_real_escape_string($mysqli, $value);
+            $token = mysqli_real_escape_string($mysqli, $token);
                              
-            if($mysqli->query("INSERT into 'TOKEN_BASE' (uid, name, token, expired) VALUES ('$uid', $name', '$value', '0')")){
-                printf("%d строк вставлено.\n", mysqli_affected_rows($mysqli));
+            $sql = "INSERT into tokens (uid, token, expired) VALUES ('$uid', '$token', 0)";
+            
+            if($query = $mysqli->prepare($sql)){
+                $query->execute();
+            }else{
+                var_dump($mysqli->error);
             }
         }
         
         public function get_token($uid)
         {
+            $result = "0";
+            
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+                        
+            $sql = "SELECT token FROM tokens WHERE uid = '$uid' AND expired = 0";
             
-            $stmt = $mysqli->prepare("SELECT name, token FROM tokens WHERE uid = '$uid'");
-            $stmt->execute();
-            $res = $stmt->get_result();
-            $row = $res->fetch_assoc();
+            if($query = $mysqli->prepare($sql)){
+                $query->execute();
+                $res = $query->get_result();
+                $row = $res->fetch_assoc();
+                
+                $result = $row["token"];
+            }else{
+                var_dump($mysqli->error);
+            }
             
-            return $row["token"];
+            
+            
+            return $result;
         }
         
         public function set_device_info($uid, $devicename, $secret)
@@ -86,23 +108,38 @@
             
             //$uid = intval($uid);
             
-            $stmt = $mysqli->prepare("INSERT into devices (uid, devicename, hash) VALUES ('$uid', '$devicename', '$secret')");
-            $stmt->execute();
+            $query = "INSERT into devices (uid, devicename, hash) VALUES ('$uid', '$devicename', '$secret')";
+            
+            if($query = $mysqli->prepare($sql)){
+                $query->execute();
+            }else{
+                var_dump($mysqli->error);
+            }
+            
         }
         
         public function get_device_info($uid)
         {
+            $result = "0";
+            
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             
             $uid = mysqli_real_escape_string($mysqli, $uid);
             
-            $stmt = $mysqli->prepare("SELECT hash FROM devices WHERE uid = '$uid'");
-           
-            $stmt->execute();
-            $res = $stmt->get_result();
-            $row = $res->fetch_assoc();
+            $query = "SELECT hash FROM devices WHERE uid = '$uid'";
             
-            return $row["hash"];
+            if($query = $mysqli->prepare($sql)){
+                $query->execute();
+                $res = $query->get_result();
+                $row = $res->fetch_assoc();
+                $result = $row["hash"];
+            }else{
+                var_dump($mysqli->error);
+            }
+            
+
+            
+            return $result;
         }
     }
     
