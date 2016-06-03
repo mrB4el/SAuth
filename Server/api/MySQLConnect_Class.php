@@ -9,7 +9,7 @@
     
     class internal_MySQL
     {
-        public function check_connect(){
+        static function check_connect(){
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             
             $result = true;
@@ -21,7 +21,7 @@
             return $result;    
         }    
         
-        public function check_token($token)
+        static function check_token($token)
         {
             $result = 0;
             
@@ -45,7 +45,7 @@
             return $result;
         }
         
-        public function close_token($token)
+        static function close_token($token)
         {
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             $token = mysqli_real_escape_string($mysqli, $token);
@@ -59,7 +59,7 @@
             }
         }
         
-        public function set_token($uid, $token)
+        static function set_token($uid, $token)
         {
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             
@@ -75,7 +75,7 @@
             }
         }
         
-        public function get_token($uid)
+        static function get_token($uid)
         {
             $result = "0";
             
@@ -98,7 +98,7 @@
             return $result;
         }
         
-        public function set_device_info($uid, $devicename, $secret)
+        static function set_device_info($uid, $devicename, $secret)
         {
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
             
@@ -118,7 +118,7 @@
             
         }
         
-        public function get_device_info($uid)
+        static function get_device_info($uid)
         {
             $result = "0";
             

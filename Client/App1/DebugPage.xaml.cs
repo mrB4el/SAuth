@@ -41,7 +41,7 @@ namespace App1
         {
             var client = new HttpClient();
 
-            string url = "http://localhost/test/index.php?type=get&login=admin&password=e10adc3949ba59abbe56e057f20f883e";
+            string url = "http://localhost/test/api/index.php?type=get&login=admin&password=e10adc3949ba59abbe56e057f20f883e";
 
             HttpResponseMessage response = await client.GetAsync(new Uri(url));
 
@@ -73,7 +73,7 @@ namespace App1
             data["devicename"] = "WIN10-PC";
             data["secret"] = ComputeMD5(ComputeMD5("Test") + pin);
 
-            textBlock.Text = await PostData("http://localhost/test/index.php", data);
+            textBlock.Text = await PostData("http://localhost/api/test/index.php", data);
 
         }
         
@@ -111,18 +111,58 @@ namespace App1
 
         public static string WinRTEncrypt(string publicKey, string data)
         {
+            String strIn = "Input String";
+
+            IBuffer buffUTF8 = CryptographicBuffer.ConvertStringToBinary(strIn, BinaryStringEncoding.Utf8);
+            String strUTF8 = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, buffUTF8);
+
             IBuffer keyBuffer = CryptographicBuffer.DecodeFromBase64String(publicKey);
 
             AsymmetricKeyAlgorithmProvider asym = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
+            //AsymmetricKeyAlgorithmProvider asym = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaOaepSha256);
 
             CryptographicKey key = asym.ImportPublicKey(keyBuffer, CryptographicPublicKeyBlobType.Pkcs1RsaPublicKey);
+            CryptographicKey key1 = asym.ImportPublicKey(keyBuffer, CryptographicPublicKeyBlobType.Pkcs1RsaPublicKey);
 
-            IBuffer plainBuffer = CryptographicBuffer.ConvertStringToBinary(data, BinaryStringEncoding.Utf8);
-            IBuffer encryptedBuffer = CryptographicEngine.Encrypt(key, plainBuffer, null);
+            IBuffer plainBuffer = CryptographicBuffer.ConvertStringToBinary(strIn, BinaryStringEncoding.Utf8);
+            IBuffer encryptedBuffer = CryptographicEngine.Encrypt(key1, plainBuffer, null);
+
+
 
             string result = CryptographicBuffer.EncodeToBase64String(encryptedBuffer);
 
-            result = Convert.ToString(encryptedBuffer);
+            //string result = CryptographicBuffer.EncodeToBase64String(encryptedBuffer);
+
+            //result = Convert.ToString(encryptedBuffer);
+
+            return result;
+        }
+
+        public static string WinRTDecrypt(string publicKey, string data)
+        {
+            String strIn = "Input String";
+
+            IBuffer buffUTF8 = CryptographicBuffer.ConvertStringToBinary(strIn, BinaryStringEncoding.Utf8);
+            String strUTF8 = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, buffUTF8);
+
+            IBuffer keyBuffer = CryptographicBuffer.DecodeFromBase64String(publicKey);
+
+            AsymmetricKeyAlgorithmProvider asym = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaPkcs1);
+            //AsymmetricKeyAlgorithmProvider asym = AsymmetricKeyAlgorithmProvider.OpenAlgorithm(AsymmetricAlgorithmNames.RsaOaepSha256);
+
+            CryptographicKey key = asym.ImportPublicKey(keyBuffer, CryptographicPublicKeyBlobType.Pkcs1RsaPublicKey);
+            CryptographicKey key1 = asym.ImportPublicKey(keyBuffer, CryptographicPublicKeyBlobType.Pkcs1RsaPublicKey);
+
+            IBuffer plainBuffer = CryptographicBuffer.ConvertStringToBinary(strIn, BinaryStringEncoding.Utf8);
+            IBuffer encryptedBuffer = CryptographicEngine.Encrypt(key1, plainBuffer, null);
+
+            //string result = CryptographicBuffer.EncodeToBase64String(encryptedBuffer);
+
+            byte[] byteArray = encryptedBuffer.ToArray();
+
+            string result = CryptographicBuffer.EncodeToBase64String(buffUTF8);
+
+            //result = Convert.FromBase64String(result);
 
             return result;
         }
@@ -139,5 +179,35 @@ namespace App1
             return answer;
         }
 
+        private async void button1_Click(object sender, RoutedEventArgs e)
+        {
+            var client = new HttpClient();
+
+            string url = "http://localhost/test/api/index.php?type=get&login=admin&password=e10adc3949ba59abbe56e057f20f883e";
+
+            /*
+            HttpResponseMessage response = await client.GetAsync(new Uri(url));
+
+            string jsonString = await response.Content.ReadAsStringAsync();
+            JsonObject jsonObject = JsonObject.Parse(jsonString);
+
+            string token = jsonObject.GetNamedString("token");
+            string publickey = jsonObject.GetNamedString("publickey");
+            string date = jsonObject.GetNamedString("date");
+            */
+            //string publickey = "MIGJAoGBAKR0RB3X24esTXsETGqpUZU3BeKovg1R2OwxAL0vnSJE4tLs5woVqipMsGNGlWP+bfMjhdZOeVQ/Fk+R2quPVuV3lEwF7ow9BFqUlxxW0xHzj4RrpIC460pgDs8e3MYZt/4UignO0K4b2T2tl6GiB2UGk6QfNs6VuFp9+WKqtZvPAgMBAAE=";
+
+            // byte[] byteArray = WinRTEncrypt(publickey, "hello");
+            //string cipherdata = System.Text.Encoding.UTF8.GetString(byteArray);
+
+            string publickey = "MIGJAoGBAKR0RB3X24esTXsETGqpUZU3BeKovg1R2OwxAL0vnSJE4tLs5woVqipMsGNGlWP+bfMjhdZOeVQ/Fk+R2quPVuV3lEwF7ow9BFqUlxxW0xHzj4RrpIC460pgDs8e3MYZt/4UignO0K4b2T2tl6GiB2UGk6QfNs6VuFp9+WKqtZvPAgMBAAE=";
+
+            string cipherdata = WinRTEncrypt(publickey, "hello");
+            textBox.Text = cipherdata;
+
+            //http://localhost/test/index.php?type=set&cipherdata=cipherdata
+            //http://localhost/test/index.php?type=set&cipherdata=cipherdata
+
+        }
     }
 }

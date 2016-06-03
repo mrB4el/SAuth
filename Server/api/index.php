@@ -12,6 +12,12 @@
 	include 'API.php';
 	//</includes>
 	
+	//Инициализация классов
+	$internal_MySQL = new internal_MySQL();
+	$crypto = new CryptoClass;
+	$json = new JSON_class();
+	$main = new MainAPI();
+		
 	class MainAPI {
 		/*
 			<<Token generate>>
@@ -32,14 +38,14 @@
 				
 				$uid = 5;
 							
-				$check = $internal_MySQL->get_token($uid); 
+				$check = internal_MySQL::get_token($uid); 
 				if(empty($check)) {
 					echo $token;
 					
 					$token = md5(rand() + $uid);
 					
-					$internal_MySQL->set_token($uid, $token);
-					$token = $internal_MySQL->get_token($uid);
+					internal_MySQL::set_token($uid, $token);
+					$token = internal_MySQL::get_token($uid);
 				}
 				else {
 					$token = $check;
@@ -48,7 +54,7 @@
 				$today = date("Y-m-d H:i:s"); 
 										
 				$plain_data = array('publickey' => $publickey, 'token' => $token, 'date' => $today);
-				$json_data = $json->send_reg_data($plain_data);
+				$json_data = JSON_class::send_reg_data($plain_data);
 				
 				echo $json_data;			
 			}
@@ -62,11 +68,11 @@
 			query template: 
 		*/
 		function device_reg() {
-			if ((API::issetParam("devicename")) $devicename = API::getParam("devicename");
-			if ((API::issetParam("secret")) $secret = API::getParam("secret");
+			if (API::issetParam("devicename")) $devicename = API::getParam("devicename");
+			if (API::issetParam("secret")) $secret = API::getParam("secret");
 			if (API::issetParam("token")) $token = API::getParam("token");
 			
-			$uid = $internal_MySQL->check_token($token);
+			$uid = internal_MySQL::check_token($token);
 			
 			if(empty($uid))	{
 				echo "Token is not valid or expired";
@@ -82,8 +88,8 @@
 				echo "Your uid is: ".$uid;
 				echo "<br/><br/>";
 				
-				$internal_MySQL->close_token($token);
-				$internal_MySQL->set_device_info($uid, $devicename, $secret);
+				internal_MySQL::close_token($token);
+				internal_MySQL::set_device_info($uid, $devicename, $secret);
 			}
 		}
 	}
@@ -91,13 +97,7 @@
 	
 	//Получаемые параметры
 	if (API::issetParam("type")) $type = API::getParam("type");
-		
-	//Инициализация классов
-	$internal_MySQL = new internal_MySQL();
-	$crypto = new CryptoClass;
-	$json = new JSON_class();
-	$main = new MainAPI();
-	
+			
 	//Кухня
 	if($type == "token_generate") {
 		$main->token_generate();

@@ -5,9 +5,9 @@
             
     class CryptoConfig
     {
-        public $publickey_path = "public.pem";
-        public $privatekey_path = "private.pem";
-        public $passphrase = "FD2534r1";
+        static $publickey_path = "public.pem";
+        static $privatekey_path = "private.pem";
+        static $passphrase = "FD2534r1";
         
         function get_value($name = 0)
         {
@@ -15,13 +15,8 @@
         }
     }
          
-    class CryptoClass
-    {
-        function execute()
-        {
-              
-        }
-              
+    class Cryptography_Class
+    {              
         function generate_keypair()
         {
             $config = new CryptoConfig();
@@ -54,20 +49,26 @@
             return $cyphertext;
         }
         
-        function decrypt($ciphertext)
+        static function decrypt($ciphertext)
         {
             $config = new CryptoConfig();
-            $rsa = new Crypt_RSA();
             
-            $fp=fopen($config->privatekey_path,"r");
+            $fp=fopen("private.pem","r");
             $priv_key=fread($fp,8192);
             fclose($fp);
             
-            $passphrase = $config->passphrase;
-            $res = openssl_get_privatekey($priv_key, $passphrase);
+            //$passphrase = $config->passphrase;
+            $res = openssl_get_privatekey($priv_key, "FD2534r1");
            
-            openssl_private_decrypt($ciphertext, $plaintext, $res);
-                      
+            openssl_private_decrypt($ciphertext, $plaintext, $res, OPENSSL_NO_PADDING);
+            
+            
+            /*$output = '';
+            for ($i = 0, $j = count($plaintext); $i < $j; ++$i) {
+                $output .= chr($plaintext[$i]);
+            }*/
+            $plaintext = mb_convert_encoding($plaintext, 'utf-8');
+            
             return $plaintext;
         }
         
