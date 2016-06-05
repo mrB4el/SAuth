@@ -124,10 +124,7 @@
 			<<Chech time pin code>>
 			query template: /index.php?type=check_pin&uid=5&pin=518974
 		*/
-        function check_pin() {
-            $uid = "0";
-			$pin = "666666";
-			$pinsize = "6";
+        function check_pin($uid = "0", $pin = "000000", $pinsize = "6") {
 			
 			if ($this->issetParam("uid")) $uid = $this->getParam("uid");
 			if ($this->issetParam("pin")) $pin = $this->getParam("pin");
@@ -142,7 +139,7 @@
             $str = $secret.$date;
             $md5_temp = MD5($str);
             $md5_temp = Cryptography_Class::magic($md5_temp, $pinsize);
-			
+
 			$status = strcmp($pin, $md5_temp);
 			
 			$plain_data = array('status' => $status);

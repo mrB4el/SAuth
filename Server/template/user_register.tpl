@@ -1,5 +1,5 @@
 <div class="block hello">
-    <h1>SAuth v1.0 - Регистрация</h1>
+    <h1>Регистрация пользователя</h1>
     <div class="text">Устаревший подход, но от этого не менее надёжный. Не забудьте повторить пароль дважды.</div>
     <div class="contblock">
         <form method="GET" action="index.php">

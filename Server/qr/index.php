@@ -7,7 +7,7 @@ if(isset($_GET["cont"])){
 	$val = base64_decode($val);
 	
 	
-	$svgCode = QRcode::svg($val); 
+	$svgCode = QRcode::png($val); 
      
     echo $svgCode; 
 }

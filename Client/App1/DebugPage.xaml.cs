@@ -39,9 +39,9 @@ namespace App1
 
         private async void button_Click(object sender, RoutedEventArgs e)
         {
-            //generate_temp_pin();
+            generate_temp_pin();
             //get_time();
-            test_registration();
+            //test_registration();
         }
 
         private async void button1_Click(object sender, RoutedEventArgs e)
