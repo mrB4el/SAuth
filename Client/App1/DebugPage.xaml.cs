@@ -39,8 +39,9 @@ namespace App1
 
         private async void button_Click(object sender, RoutedEventArgs e)
         {
-            generate_temp_pin();
+            //generate_temp_pin();
             //get_time();
+            test_registration();
         }
 
         private async void button1_Click(object sender, RoutedEventArgs e)
@@ -192,7 +193,6 @@ namespace App1
 
             string token = jsonObject.GetNamedString("token");
             string publickey = jsonObject.GetNamedString("publickey");
-            string date = jsonObject.GetNamedString("date");
 
             textBlock1.Text = "Server answer 1";
             textBox1.Text = jsonString;

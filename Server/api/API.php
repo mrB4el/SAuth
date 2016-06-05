@@ -10,7 +10,7 @@
 	include 'Cryptography_class.php';
 	include 'JSON_Class.php';
 	//</includes>
-    
+   	
     class API
     {
         static function issetParam( $name ) {
@@ -19,29 +19,46 @@
         static function getParam( $name, $defaultValue = "" ) {
             return isset($_POST[$name]) ? $_POST[$name] : (isset($_GET[$name]) ? $_GET[$name] : $defaultValue);
         }      
+		
 		/*
 			<<Token generate>>
 			query template: /index.php?type=token_generate&login=admin&password=e10adc3949ba59abbe56e057f20f883e
 		*/
-		function token_generate() {
-			if ($this->issetParam("login")) $login = $this->getParam("login");
+		function token_generate($username = "", $password = "") {
+			if ($this->issetParam("username")) $username = $this->getParam("username");
 			if ($this->issetParam("password")) $password = $this->getParam("password");
 			
 			$token = "";
 			
 			//masterkey = 3021e68df9a7200135725c6331369a22;
 			
-			if( ($login == 'admin') && ($password == 'e10adc3949ba59abbe56e057f20f883e') ) {
+			$result = "0";
+            
+            $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+                      
+            $username = mysqli_real_escape_string($mysqli, $username);
+            $password = mysqli_real_escape_string($mysqli, $password);
+              
+            $sql = "SELECT id FROM users WHERE username = '$username' AND password = '$password'";
+            
+            if($query = $mysqli->prepare($sql)){
+                $query->execute();
+                $res = $query->get_result();
+                $row = $res->fetch_assoc();
+                
+                $uid = $row["id"];
+            }else{
+                var_dump($mysqli->error);
+            }
+			
+			if( ($uid != "0") OR ($uid != "") ) {
 				//$publickey = $crypto->get_publickey();
 				
 				$publickey = "somepublickey";
 				
-				$uid = 5;
 							
 				$check = MySQLConnect_Class::get_token($uid); 
-				if(empty($check)) {
-					echo $token;
-					
+				if(empty($check)) {				
 					$token = md5(rand() + $uid);
 					
 					MySQLConnect_Class::set_token($uid, $token);
@@ -53,14 +70,16 @@
 				
 				$today = date("Y-m-d H:i:s"); 
 										
-				$plain_data = array('publickey' => $publickey, 'token' => $token, 'date' => $today);
-				$json_data = JSON_class::send_reg_data($plain_data);
-				
-				echo $json_data;			
+				$plain_data = array('publickey' => $publickey, 'token' => $token);
+				$json_data = JSON_class::send_data($plain_data);
 			}
 			else {
-				echo 'fail';
+				$plain_data = array("status" => "failed");
 			}
+			
+			$json_data = JSON_class::send_data($plain_data);	
+			
+			return $json_data;
 		}
 		
 		/*
@@ -75,22 +94,18 @@
 			$uid = MySQLConnect_Class::check_token($token);
 			
 			if(empty($uid))	{
-				echo "Token is not valid or expired";
-				echo "<br/><br/>";
+				$plain_data = array("status" => "failed");
 			}
-			else {			
-				echo "Your token is: ".$token;
-				echo "<br/><br/>";
-				echo "Device name is: ".$devicename;
-				echo "<br/><br/>";
-				echo "Device secret is: ".$secret;
-				echo "<br/><br/>";
-				echo "Your uid is: ".$uid;
-				echo "<br/><br/>";
-				
+			else {						
 				MySQLConnect_Class::close_token($token);
 				MySQLConnect_Class::set_device_info($uid, $devicename, $secret);
+				
+				$plain_data = array("status" => "success");
 			}
+			
+			$json_data = JSON_class::send_data($plain_data);	
+			
+			return $json_data;
 		}
         
         /*
@@ -100,35 +115,46 @@
 		function get_time() {
             $today = date("Y-m-d H:i:s");
 			$plain_data = array('time' => $today);
-			$json_data = JSON_class::send_reg_data($plain_data);
+			$json_data = JSON_class::send_data($plain_data);
 			
-			echo $json_data;
+			return $json_data;
 		}
         
-		
-        function check_pin( $pin ) {
-                   
-            $interval1 = date("H:i"); ;
-            $nextWeek = time() + (1 * 60);
-            $interval2 = date("H:i", $nextWeek);
-            echo $interval1;
-            echo "<br/>";
-            echo $interval2;
-            echo "<br/>";
+		 /*
+			<<Chech time pin code>>
+			query template: /index.php?type=check_pin&uid=5&pin=518974
+		*/
+        function check_pin() {
+            $uid = "0";
+			$pin = "666666";
+			$pinsize = "6";
+			
+			if ($this->issetParam("uid")) $uid = $this->getParam("uid");
+			if ($this->issetParam("pin")) $pin = $this->getParam("pin");
+			if ($this->issetParam("pinsize")) $pinsize = $this->getParam("pinsize");
+			       
+            $date = date("H:i"); ;
+            //$nextMin = time() + (1 * 60);
+            //$interval2 = date("H:i", $nextMin);
             
-           // $date->add(new DateInterval('P0Y0M0DT0H0M30S'));
+            $secret = MySQLConnect_Class::get_device_info($uid);
             
-            //$interval2 = $date->format("d.m.Y H:m:s");
-            $secret = MySQLConnect_Class::get_device_info("5");
-            
-            $str = $secret.$interval1;
+            $str = $secret.$date;
             $md5_temp = MD5($str);
-            
-            $md5_temp = Cryptography_Class::magic($md5_temp, 6);
-            
-         
-            echo $md5_temp;
-            echo "<br/>";
+            $md5_temp = Cryptography_Class::magic($md5_temp, $pinsize);
+			
+			$status = strcmp($pin, $md5_temp);
+			
+			$plain_data = array('status' => $status);
+			$json_data = JSON_class::send_data($plain_data);
+			
+			return $json_data;
         }
 	}
+	
+	//Инициализация классов
+	$mysqlConnect_Class = new MySQLConnect_Class();
+	$crypto = new Cryptography_Class();
+	$json_class = new JSON_class();
+	$api = new API();
 ?>

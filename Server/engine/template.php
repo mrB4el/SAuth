@@ -72,4 +72,11 @@
             throw new Exception("Template file '{$template}' not found.");
         }
     }
+    
+    $tpl = Tpl::instance(array(
+        // путь к папке с шаблонами
+        'dir' => './template',
+        // расширение файлов шаблонов
+        'ext' => 'tpl',
+    ));
 ?>

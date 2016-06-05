@@ -8,33 +8,25 @@
 	//<includes>
 	include 'API.php';
 	//</includes>
-	
-	//Инициализация классов
-	$MySQLConnect_Class = new MySQLConnect_Class();
-	$crypto = new Cryptography_Class();
-	$json = new JSON_class();
-	$api = new API();
-		
-	
-	
+
 	
 	//Получаемые параметры
 	if ($api->issetParam("type")) $type = $api->getParam("type");
 			
 	//Кухня
 	if($type == "token_generate") {
-		$api->token_generate();
+		echo $api->token_generate();
 	}
 	
 	if($type == "registration") {
-		$api->device_reg();
+		echo $api->device_reg();
 	}
 	
 	if($type == "get_time") {
-		$api->get_time();
+		echo $api->get_time();
 	}
 	
 	if($type == "check_pin") {
-		$api->check_pin( "111111" );
+		echo $api->check_pin(  );
 	}
 ?>
