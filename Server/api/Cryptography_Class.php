@@ -31,22 +31,19 @@
              
         }    
         
-        function encrypt($plaintext)
+        static function encrypt($plaintext)
         {
             $config = new CryptoConfig();
             
-            $fp = fopen($config->publickey_path ,"r");
-		
-            $pub_key=fread ($fp,8192);
+            $fp = fopen("public.pem" ,"r");
+		    $pub_key=fread ($fp,8192);
             fclose($fp);
 
             $PK="";
             $PK=openssl_get_publickey($pub_key);
 
-            
-            openssl_public_encrypt($plaintext,  $cyphertext, $PK);
-            
-            return $cyphertext;
+            openssl_public_encrypt($plaintext, $ciphertext, $PK, 1);
+            return $ciphertext;
         }
         
         static function decrypt($ciphertext)
@@ -60,23 +57,40 @@
             //$passphrase = $config->passphrase;
             $res = openssl_get_privatekey($priv_key, "FD2534r1");
            
-            openssl_private_decrypt($ciphertext, $plaintext, $res, OPENSSL_NO_PADDING);
+            openssl_private_decrypt($ciphertext, $plaintext, $res, 1);
             
             
             /*$output = '';
             for ($i = 0, $j = count($plaintext); $i < $j; ++$i) {
                 $output .= chr($plaintext[$i]);
             }*/
-            $plaintext = mb_convert_encoding($plaintext, 'utf-8');
+            //$plaintext = mb_convert_encoding($plaintext, 'utf-8');
             
             return $plaintext;
         }
         
-        function get_publickey()
+        static function get_publickey()
         {
             $config = new CryptoConfig();
             return file_get_contents($config->publickey_path);
         }
+        static function magic($MD5hash, $size)
+		{
+			$result = "";
+
+            $MD5hash = str_replace("a", "1", $MD5hash);
+			$MD5hash = str_replace("b", "2", $MD5hash);
+			$MD5hash = str_replace("c", "3", $MD5hash);
+			$MD5hash = str_replace("d", "4", $MD5hash);
+			$MD5hash = str_replace("e", "5", $MD5hash);
+			$MD5hash = str_replace("f", "6", $MD5hash);
+			$MD5hash = str_replace("g", "7", $MD5hash);
+			
+			$size = -1*$size;
+			$result = substr($MD5hash, $size); 
+			
+            return $result;
+		}
     }
 /*
     $crypto->generate_keypair();

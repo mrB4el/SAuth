@@ -7,7 +7,7 @@
     define ("TOKEN_BASE", "tokens"); 
     
     
-    class internal_MySQL
+    class MySQLConnect_Class
     {
         static function check_connect(){
             $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
@@ -41,7 +41,6 @@
             }else{
                 var_dump($mysqli->error);
             }
-            
             return $result;
         }
         
@@ -92,9 +91,6 @@
             }else{
                 var_dump($mysqli->error);
             }
-            
-            
-            
             return $result;
         }
         
@@ -108,7 +104,7 @@
             
             //$uid = intval($uid);
             
-            $query = "INSERT into devices (uid, devicename, hash) VALUES ('$uid', '$devicename', '$secret')";
+            $sql = "INSERT into devices (uid, devicename, secret) VALUES ('$uid', '$devicename', '$secret')";
             
             if($query = $mysqli->prepare($sql)){
                 $query->execute();
@@ -126,29 +122,19 @@
             
             $uid = mysqli_real_escape_string($mysqli, $uid);
             
-            $query = "SELECT hash FROM devices WHERE uid = '$uid'";
+            $sql = "SELECT secret FROM devices WHERE uid = '$uid'";
             
             if($query = $mysqli->prepare($sql)){
                 $query->execute();
                 $res = $query->get_result();
                 $row = $res->fetch_assoc();
-                $result = $row["hash"];
+                $result = $row["secret"];
             }else{
                 var_dump($mysqli->error);
             }
-            
-
-            
             return $result;
         }
+       
     }
-    
-    /*
-        $internal_MySQL->check_connect();
-        $internal_MySQL->set_token("test", "123456");
-        $res = $internal_MySQL->get_token(1);
- 
-        
-        $res = $internal_MySQL->get_device_info(1);
-    */
+
 ?>

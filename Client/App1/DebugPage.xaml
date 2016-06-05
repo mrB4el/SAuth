@@ -7,12 +7,26 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="0,0,0,-1450">
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="38,128,0,0" TextWrapping="Wrap" Text="Ответ" VerticalAlignment="Top"/>
         <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="38,54,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="url"/>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="38,91,0,0" VerticalAlignment="Top" Click="button_Click" Width="108"/>
+        <Button x:Name="button" Content="Do it" HorizontalAlignment="Left" Margin="38,91,0,0" VerticalAlignment="Top" Click="button_Click" Width="108"/>
         <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" Margin="178,91,0,0" VerticalAlignment="Top" Click="button1_Click"/>
-        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Margin="178,146,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-
+        <ScrollViewer VerticalScrollBarVisibility="Visible" BorderThickness="0" Margin="0,150,0,0">
+            <StackPanel x:Name="Debug_panel">
+                <Grid x:Name="DebugGrid_1" Margin="0" Padding="10">
+                    <TextBlock x:Name="textBlock1" Margin="0" TextWrapping="Wrap" Text="TextBlock1" VerticalAlignment="Top"/>
+                    <TextBox x:Name="textBox1" Margin="0,35,0,0" TextWrapping="Wrap" Text="TextBox1" VerticalAlignment="Top" BorderThickness="1"/>
+                </Grid>
+                <Grid x:Name="DebugGrid_2" Padding="10">
+                    <TextBlock x:Name="textBlock2" Margin="0" TextWrapping="Wrap" Text="TextBlock2" VerticalAlignment="Top"/>
+                    <TextBox x:Name="textBox2" Margin="0,35,0,0" TextWrapping="Wrap" Text="TextBox2" VerticalAlignment="Top" BorderThickness="1"/>
+                </Grid>
+                <Grid x:Name="DebugGrid_3" Padding="10">
+                    <TextBlock x:Name="textBlock3" Margin="0" TextWrapping="Wrap" Text="TextBlock3" VerticalAlignment="Top"/>
+                    <TextBox x:Name="textBox3" Margin="0,35,0,0" TextWrapping="Wrap" Text="TextBox3" VerticalAlignment="Top" BorderThickness="1"/>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
