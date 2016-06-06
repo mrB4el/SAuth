@@ -63,4 +63,6 @@ Temporary Items
 \ipch
 \obj
 \bin
+\AppPackages
+\BundleArtifacts
 *.pem
