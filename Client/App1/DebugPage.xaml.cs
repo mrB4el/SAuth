@@ -39,12 +39,17 @@ namespace App1
 
         private async void button_Click(object sender, RoutedEventArgs e)
         {
-            generate_temp_pin();
+            //generate_temp_pin();
             //get_time();
-            //test_registration();
+            test_registration();
         }
 
         private async void button1_Click(object sender, RoutedEventArgs e)
+        {
+            generate_temp_pin();
+        }
+
+        void some_crypt()
         {
             var client = new HttpClient();
 
@@ -75,18 +80,17 @@ namespace App1
             var data = new Dictionary<string, string>();
             data["ciphertext"] = cipherdata;
 
-            string answer = await GET_Query_Data("http://localhost/test/crypt.php", data);
+            //string answer = await GET_Query_Data("http://localhost/test/crypt.php", data);
 
             //IBuffer buffUTF8 = CryptographicBuffer.ConvertStringToBinary(answer, BinaryStringEncoding.Utf8);
             //String strUTF8 = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, buffUTF8);
 
-            textBox1.Text = answer;
+            //textBox1.Text = answer;
             textBox2.Text = cipherdata;
             //textBox3.Text = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf16BE, CryptographicBuffer.DecodeFromBase64String(cipherdata));
 
             //http://localhost/test/index.php?type=set&cipherdata=cipherdata
             //http://localhost/test/index.php?type=set&cipherdata=cipherdata
-
         }
 
         /// <summary>
@@ -133,7 +137,7 @@ namespace App1
         }
         public void generate_temp_pin()
         {
-            string pin = "1313";
+            string pin = textBox_pin.Text;
 
             string secret = ComputeMD5(ComputeMD5("Test") + pin);
 
@@ -161,7 +165,6 @@ namespace App1
         /// <param name="MD5hash">MD5 хэш</param>
         /// <param name="size">Количество символов выходного значения</param>
         /// <returns></returns>
-
         public string magic(string MD5hash, int size)
         {
             string result = "";
@@ -183,6 +186,8 @@ namespace App1
         /// </summary>
         public async void test_registration()
         {
+
+            /*
             var reginfo = new Dictionary<string, string>();
             reginfo["type"] = "token_generate";
             reginfo["login"] = "admin";
@@ -198,6 +203,10 @@ namespace App1
             textBox1.Text = jsonString;
 
             string pin = "1313";
+            */
+
+            string token = textBox.Text;
+            string pin = textBox_pin.Text;
 
             var data = new Dictionary<string, string>();
             data["type"] = "registration";

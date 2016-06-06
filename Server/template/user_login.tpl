@@ -1,4 +1,4 @@
-<div class="block login">
+<div class="login user">
     <h1>Запрос PIN-кода</h1>
     <div class="text">Введите в поле ниже код, который отображается у вас на экране устрйоства.</div>
     <div class="contblock">

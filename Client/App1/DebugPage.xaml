@@ -8,10 +8,9 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="0,0,0,-1450">
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="38,128,0,0" TextWrapping="Wrap" Text="Ответ" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="38,54,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="url"/>
-        <Button x:Name="button" Content="Do it" HorizontalAlignment="Left" Margin="38,91,0,0" VerticalAlignment="Top" Click="button_Click" Width="108"/>
-        <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" Margin="178,91,0,0" VerticalAlignment="Top" Click="button1_Click"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="38,80,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" PlaceholderText="token" Width="295"/>
+        <Button x:Name="button" Content="Reg" HorizontalAlignment="Left" Margin="38,117,0,0" VerticalAlignment="Top" Click="button_Click" Width="64"/>
+        <Button x:Name="button1" Content="Get PIN" HorizontalAlignment="Left" Margin="219,117,0,0" VerticalAlignment="Top" Click="button1_Click" Width="114"/>
         <ScrollViewer VerticalScrollBarVisibility="Visible" BorderThickness="0" Margin="0,150,0,0">
             <StackPanel x:Name="Debug_panel">
                 <Grid x:Name="DebugGrid_1" Margin="0" Padding="10">
@@ -28,5 +27,6 @@
                 </Grid>
             </StackPanel>
         </ScrollViewer>
+        <TextBox x:Name="textBox_pin" HorizontalAlignment="Left" Margin="38,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="295" PlaceholderText="Your PIN"/>
     </Grid>
 </Page>

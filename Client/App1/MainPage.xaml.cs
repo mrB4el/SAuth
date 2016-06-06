@@ -52,6 +52,16 @@ namespace App1
             this.InitializeComponent();
         }
 
+        private string pin = "";
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            pin = e.Parameter as string;
+            button_action.Content = pin;
+        }
+
+
         ClassTimer Timer = new ClassTimer();
 
         private void button_action_Click(object sender, RoutedEventArgs e)
@@ -73,6 +83,10 @@ namespace App1
             }
 
         }
-    }
 
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage), pin);
+        }
+    }
 }

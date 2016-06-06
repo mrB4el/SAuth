@@ -10,6 +10,9 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="textBlock_time" HorizontalAlignment="Center" Margin="0" TextWrapping="Wrap" Text="0" VerticalAlignment="Center"/>
         <Button x:Name="button_action" Content="Старт" HorizontalAlignment="Center" Margin="0,60,0,0" VerticalAlignment="Center" Click="button_action_Click"/>
+        <Grid x:Name="menu" Height="55" Margin="0" VerticalAlignment="Bottom">
+            <AppBarButton Icon="Add" HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" BorderBrush="Black" BorderThickness="1" Click="AppBarButton_Click" />
+        </Grid>
 
     </Grid>
 </Page>

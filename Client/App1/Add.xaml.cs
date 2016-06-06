@@ -15,25 +15,23 @@ using Windows.UI.Xaml.Navigation;
 
 // Шаблон элемента пустой страницы задокументирован по адресу http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace App1
+namespace SAuth_Client
 {
     /// <summary>
     /// Пустая страница, которую можно использовать саму по себе или для перехода внутри фрейма.
     /// </summary>
-    public sealed partial class PinAuth : Page
+    public sealed partial class Add : Page
     {
-        public PinAuth()
+        public Add()
         {
             this.InitializeComponent();
         }
 
-        private void button_PIN_Click(object sender, RoutedEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            string pin = textBox_PIN.Text;
-
-            //check(pin);
-
-            Frame.Navigate(typeof(MainPage), pin);
+            base.OnNavigatedTo(e);
+            //pin = e.Parameter as string;
+            //button_action.Content = pin;
         }
     }
 }

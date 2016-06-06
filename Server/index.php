@@ -74,23 +74,25 @@
                 $tpl->content = $tpl->render('user_login');
             }
         }
+        if( $type == "login_extra" ) {
+                $tpl->content = $tpl->render('login_extra');
+        }
+        
         if( $type == "device_login" ) 
         {
             $login = "Guest";
-            $password = "";
             $pin = "000000";
                         
             if ($api->issetParam("login")) $login = $api->getParam("login");
             //сделать проверку логина
-            if ($api->issetParam("password")) $password = $api->getParam("password");
             if ($api->issetParam("pin")) $pin = $api->getParam("pin");
             
-            $uid = $mysql->check_login($login, $password);
+            $uid = $mysql->get_uid($login);
             
             if($uid == 0)
             {
                 $error['title'] = "Ошибка с профилем";
-                $error['content'] = "Такой пары пользователь/пароль не существует";
+                $error['content'] = "Такого пользователя не существует.";
                 $tpl->error = $error;
                 $tpl->system_messages = $tpl->render('error');
             }
@@ -102,11 +104,12 @@
                 $status = $json_class->get_data($answ);
                                
                 if($status["status"] == "0") {
-                    echo "Here's some secret data!";
+                    $secret = "Here's some secret data!";
+                    $tpl->secret = $secret;
                 }
                 else {
                     $error['title'] = "Ошибка проверки подлинности";
-                    $error['content'] = "Ввёденные вами данные пароля, ключа и пин-кода являются неверными!";
+                    $error['content'] = "Ввёденные вами данные являются неверными!";
                     $tpl->error = $error;
                     $tpl->system_messages = $tpl->render('error');
                 }
@@ -119,7 +122,7 @@
     if($do == "registration") {
 		$tpl->content = $tpl->render('user_register');
         
-        $type = "user_registration";
+        $type = "";
         
         if ($api->issetParam("type")) $type = $api->getParam("type");
         
@@ -135,14 +138,23 @@
             if ($api->issetParam("password1")) $password1 = $api->getParam("password1");
             if ($api->issetParam("password2")) $password2 = $api->getParam("password2");
             
-            if ($password1 == $password2)
+            if( !empty($password1) AND !empty($password2) AND !empty($login) )
             {
-                $mysql->register($login, $password1, "admin@admin.com");
-                echo 'success';
+            
+                if ($password1 == $password2)
+                {
+                    $mysql->register($login, $password1, "admin@admin.com");
+                }
+                else {
+                    $error['title'] = "Ошибка с паролями";
+                    $error['content'] = "Пароли не совпадают";
+                    $tpl->error = $error;
+                    $tpl->system_messages = $tpl->render('error');
+                }
             }
             else {
-                $error['title'] = "Ошибка с паролями";
-                $error['content'] = "Пароли не совпадают";
+                $error['title'] = "Упс";
+                $error['content'] = "Поля регистрации не могут быть пустыми";
                 $tpl->error = $error;
                 $tpl->system_messages = $tpl->render('error');
             }
@@ -150,17 +162,16 @@
         // /index.php?do=registration&type=device_registration&login=mrB4el&password=e10adc3949ba59abbe56e057f20f883e
         if($type == "device_registration") {
         
-            $tpl->content = $tpl->render('user_register');
-            
-            $type = "user_registration";
             
             if ($api->issetParam("type")) $type = $api->getParam("type");
             if ($api->issetParam("login")) $login = $api->getParam("login");
                 //сделать проверку логина
             if ($api->issetParam("password")) $password = $api->getParam("password");
             
-            $uid = $mysql->check_login($login, $password);
+            $password = md5($password);
             
+            $uid = $mysql->check_login($login, $password);
+
             if($uid == 0)
             {
                 $error['title'] = "Ошибка с профилем";
@@ -170,6 +181,7 @@
             }
             else {
                 $qr_url = $api->token_generate($login, $password);
+                $qr_url_clear = $qr_url;
                 
                 $qr_url = base64_encode($qr_url);
                 
@@ -177,14 +189,19 @@
 
                 //$qr_url = "<object data=\"qr/index.php?cont=".$qr_url.".svg\" type=\"image/svg+xml\"></object>">
                 
-                $tpl->device_register = $qr_url;
+                $tpl->drm_qr = $qr_url;
+                $tpl->drm_qrc = $qr_url_clear;
 
             }
-            $tpl->content = $tpl->render('device_register');
+            $tpl->content = $tpl->render('device_register_message');
         }
         
 	}
-
+    
+    if($do == "set_up") {
+        $tpl->content = $tpl->render('device_registration');
+    }
+    
     echo $tpl->render('index');
     
 ?>

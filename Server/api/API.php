@@ -25,8 +25,8 @@
 			query template: /index.php?type=token_generate&login=admin&password=e10adc3949ba59abbe56e057f20f883e
 		*/
 		function token_generate($username = "", $password = "") {
-			if ($this->issetParam("username")) $username = $this->getParam("username");
-			if ($this->issetParam("password")) $password = $this->getParam("password");
+			//if ($this->issetParam("username")) $username = $this->getParam("username");
+			//if ($this->issetParam("password")) $password = $this->getParam("password");
 			
 			$token = "";
 			
@@ -77,7 +77,7 @@
 				$plain_data = array("status" => "failed");
 			}
 			
-			$json_data = JSON_class::send_data($plain_data);	
+			$json_data = JSON_class::send_data($plain_data);
 			
 			return $json_data;
 		}

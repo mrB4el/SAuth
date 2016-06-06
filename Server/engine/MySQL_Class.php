@@ -42,5 +42,24 @@
             }
             return $result;
         }
+        function get_uid($username)
+        {
+            $mysqli = new mysqli(DBHOST, DBUSER, DBPASS, DBNAME);
+                      
+            $username = mysqli_real_escape_string($mysqli, $username);
+              
+            $sql = "SELECT id FROM users WHERE username = '$username'";
+            
+            if($query = $mysqli->prepare($sql)){
+                $query->execute();
+                $res = $query->get_result();
+                $row = $res->fetch_assoc();
+                
+                $result = $row["id"];
+            }else{
+                var_dump($mysqli->error);
+            }
+            return $result;
+        }
     }
 ?>
